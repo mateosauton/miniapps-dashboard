@@ -5,10 +5,10 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
 const NAV = [
-  { href: '/overview', label: 'Overview', badge: 'Live', section: 'Platform' },
-  { href: '/apps', label: 'Apps', badge: '50', section: 'Platform' },
-  { href: '/commands', label: 'Commands', badge: '14', section: 'SDK Reference' },
-  { href: '/guide', label: 'Guide', badge: '', section: 'SDK Reference' },
+  { href: '/overview', label: 'Overview', section: 'Platform' },
+  { href: '/apps', label: 'Apps', section: 'Platform' },
+  { href: '/commands', label: 'Commands', section: 'SDK Reference' },
+  { href: '/guide', label: 'Guide', section: 'SDK Reference' },
 ]
 
 const SECTIONS = ['Platform', 'SDK Reference']
@@ -45,25 +45,13 @@ export function AppSidebar() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'flex items-center justify-between mx-1.5 px-2.5 py-1.5 rounded-md text-[13px] font-medium transition-colors',
+                    'flex items-center mx-1.5 px-2.5 py-1.5 rounded-md text-[13px] font-medium transition-colors',
                     active
                       ? 'bg-[#121212] text-white'
                       : 'text-[#373635] hover:bg-[#f9f9f8] hover:text-[#121212]'
                   )}
                 >
                   {item.label}
-                  {item.badge && (
-                    <span
-                      className={cn(
-                        'text-[11px] font-semibold px-1.5 py-0.5 rounded-full',
-                        active
-                          ? 'bg-white/20 text-white'
-                          : 'bg-[#e1dfda] text-[#9D9B96]'
-                      )}
-                    >
-                      {item.badge}
-                    </span>
-                  )}
                 </Link>
               )
             })}

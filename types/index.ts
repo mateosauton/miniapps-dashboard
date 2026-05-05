@@ -4,6 +4,12 @@ export interface AppCategory {
   name: string
 }
 
+export interface AppDescription {
+  overview?: string
+  how_it_works?: string
+  how_to_connect?: string
+}
+
 export interface WorldApp {
   app_id: string
   name: string
@@ -24,11 +30,20 @@ export interface WorldApp {
   max_notifications_per_day: number
   logo_img_url: string
   world_app_description: string
+  description?: AppDescription
   integration_url?: string
   app_website_url?: string
+  support_link?: string
+  source_code_url?: string
+  showcase_img_urls?: string[]
+  hero_image_url?: string
+  world_app_button_text?: string
+  associated_domains?: string[]
+  contracts?: string[]
   whitelisted_addresses?: string[]
   permit2_tokens?: string[]
   has_attestation?: boolean
+  show_in_app_store?: boolean
 }
 
 export interface AppsApiResponse {

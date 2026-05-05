@@ -7,10 +7,10 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { cn } from '@/lib/utils'
 
 const NAV = [
-  { href: '/overview', label: 'Overview', badge: 'Live', section: 'Platform' },
-  { href: '/apps', label: 'Apps', badge: '50', section: 'Platform' },
-  { href: '/commands', label: 'Commands', badge: '14', section: 'SDK Reference' },
-  { href: '/guide', label: 'Guide', badge: '', section: 'SDK Reference' },
+  { href: '/overview', label: 'Overview', section: 'Platform' },
+  { href: '/apps', label: 'Apps', section: 'Platform' },
+  { href: '/commands', label: 'Commands', section: 'SDK Reference' },
+  { href: '/guide', label: 'Guide', section: 'SDK Reference' },
 ]
 
 export function MobileNav() {
@@ -57,11 +57,6 @@ export function MobileNav() {
                     )}
                   >
                     {item.label}
-                    {item.badge && (
-                      <span className={cn('text-[11px] px-1.5 py-0.5 rounded-full', active ? 'bg-white/20 text-white' : 'bg-[#e1dfda] text-[#9D9B96]')}>
-                        {item.badge}
-                      </span>
-                    )}
                   </Link>
                 )
               })}

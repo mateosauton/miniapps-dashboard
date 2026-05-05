@@ -24,8 +24,19 @@ function slimApp(raw: WorldApp): WorldApp {
     max_notifications_per_day: raw.max_notifications_per_day,
     logo_img_url: raw.logo_img_url,
     world_app_description: raw.world_app_description,
+    description: raw.description,
     integration_url: raw.integration_url,
     app_website_url: raw.app_website_url,
+    support_link: raw.support_link,
+    source_code_url: raw.source_code_url,
+    showcase_img_urls: raw.showcase_img_urls ?? [],
+    hero_image_url: raw.hero_image_url,
+    world_app_button_text: raw.world_app_button_text,
+    associated_domains: raw.associated_domains ?? [],
+    contracts: raw.contracts ?? [],
+    whitelisted_addresses: raw.whitelisted_addresses ?? [],
+    permit2_tokens: raw.permit2_tokens ?? [],
+    show_in_app_store: raw.show_in_app_store,
   }
 }
 

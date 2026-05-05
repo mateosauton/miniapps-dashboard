@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from 'react'
 import { AppCard } from './AppCard'
+import { AppDetailDrawer } from './AppDetailDrawer'
 import type { WorldApp } from '@/types'
 
 const CATEGORIES = ['All', 'Tokens', 'Finance', 'Gaming', 'Earn', 'Business', 'Other']
@@ -18,6 +19,7 @@ export function AppsGrid({ apps }: Props) {
   const [cat, setCat] = useState('All')
   const [humansOnly, setHumansOnly] = useState(false)
   const [sort, setSort] = useState<'users' | 'rating' | 'impressions'>('users')
+  const [selectedApp, setSelectedApp] = useState<WorldApp | null>(null)
 
   const filtered = useMemo(() => {
     let list = apps
@@ -119,10 +121,12 @@ export function AppsGrid({ apps }: Props) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {filtered.map((app) => (
-            <AppCard key={app.app_id} app={app} />
+            <AppCard key={app.app_id} app={app} onClick={() => setSelectedApp(app)} />
           ))}
         </div>
       )}
+
+      <AppDetailDrawer app={selectedApp} onClose={() => setSelectedApp(null)} />
     </div>
   )
 }

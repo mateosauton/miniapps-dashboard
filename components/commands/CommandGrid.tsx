@@ -5,13 +5,15 @@ import { toast } from 'sonner'
 import { cn, commandCategoryColors, sdkColors } from '@/lib/utils'
 import { ParamsTable, ReturnsTable } from './ParamsTable'
 import { CodeBlock } from './CodeBlock'
+import { UIKitSection } from './UIKitSection'
 import type { MiniKitCommand, CommandSDK } from '@/types'
 
-const SDK_TABS: { key: CommandSDK | 'all'; label: string }[] = [
+const SDK_TABS: { key: CommandSDK | 'all' | 'uikit'; label: string }[] = [
   { key: 'all', label: 'All' },
   { key: 'minikit', label: 'MiniKit' },
   { key: 'idkit', label: 'IDKit' },
   { key: 'agentkit', label: 'AgentKit' },
+  { key: 'uikit', label: 'UI Kit' },
 ]
 
 const CAT_TABS = ['All', 'auth', 'payments', 'signing', 'messaging', 'permissions', 'notifications', 'ux']
@@ -19,11 +21,12 @@ const CAT_TABS = ['All', 'auth', 'payments', 'signing', 'messaging', 'permission
 interface Props { commands: MiniKitCommand[] }
 
 export function CommandGrid({ commands }: Props) {
-  const [sdk, setSdk] = useState<CommandSDK | 'all'>('all')
+  const [sdk, setSdk] = useState<CommandSDK | 'all' | 'uikit'>('all')
   const [cat, setCat] = useState('All')
   const [openSlug, setOpenSlug] = useState<string | null>(null)
 
   const filtered = commands.filter((c) => {
+    if (sdk === 'uikit') return false
     if (sdk !== 'all' && c.sdk !== sdk) return false
     if (cat !== 'All' && c.category !== cat) return false
     return true
@@ -32,15 +35,15 @@ export function CommandGrid({ commands }: Props) {
   return (
     <div>
       {/* SDK tabs */}
-      <div className="flex gap-1 mb-3">
+      <div className="flex gap-1 mb-3 flex-wrap">
         {SDK_TABS.map((t) => (
           <button
             key={t.key}
-            onClick={() => setSdk(t.key)}
+            onClick={() => { setSdk(t.key); setOpenSlug(null) }}
             className={cn(
               'px-3 py-1.5 rounded text-[12.5px] font-semibold transition-colors',
               sdk === t.key
-                ? t.key === 'all' ? 'bg-[#121212] text-white' : sdkColors[t.key as CommandSDK]
+                ? t.key === 'all' || t.key === 'uikit' ? 'bg-[#121212] text-white' : sdkColors[t.key as CommandSDK]
                 : 'bg-[#e1dfda] text-[#373635] hover:bg-[#CECDCA]'
             )}
           >
@@ -49,34 +52,38 @@ export function CommandGrid({ commands }: Props) {
         ))}
       </div>
 
-      {/* Category tabs */}
-      <div className="flex gap-1 flex-wrap mb-4">
-        {CAT_TABS.map((c) => (
-          <button
-            key={c}
-            onClick={() => setCat(c)}
-            className={cn(
-              'px-2.5 py-1 rounded text-[12px] font-medium transition-colors capitalize',
-              cat === c ? 'bg-[#007CFB] text-white' : 'bg-[#f9f9f8] text-[#373635] hover:bg-[#e1dfda]'
-            )}
-          >
-            {c}
-          </button>
-        ))}
-      </div>
+      {/* UI Kit view */}
+      {sdk === 'uikit' && <UIKitSection />}
 
-      <div className="text-[11.5px] text-[#9D9B96] mb-3">{filtered.length} command{filtered.length !== 1 ? 's' : ''}</div>
+      {/* Category tabs (SDK commands only) */}
+      {sdk !== 'uikit' && <>
+        <div className="flex gap-1 flex-wrap mb-4">
+          {CAT_TABS.map((c) => (
+            <button
+              key={c}
+              onClick={() => setCat(c)}
+              className={cn(
+                'px-2.5 py-1 rounded text-[12px] font-medium transition-colors capitalize',
+                cat === c ? 'bg-[#007CFB] text-white' : 'bg-[#f9f9f8] text-[#373635] hover:bg-[#e1dfda]'
+              )}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
 
-      {/* Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-        {filtered.map((cmd) => {
+        <div className="text-[11.5px] text-[#9D9B96] mb-3">{filtered.length} command{filtered.length !== 1 ? 's' : ''}</div>
+
+        {/* Cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
+          {filtered.map((cmd) => {
           const isOpen = openSlug === cmd.slug
           return (
             <div
               key={cmd.slug}
               className={cn(
                 'bg-white border rounded-lg overflow-hidden transition-colors',
-                isOpen ? 'border-[#121212]' : 'border-[#CECDCA]'
+                isOpen ? 'border-[#121212] lg:col-span-2' : 'border-[#CECDCA]'
               )}
             >
               {/* Header */}
@@ -171,8 +178,9 @@ export function CommandGrid({ commands }: Props) {
               )}
             </div>
           )
-        })}
-      </div>
+          })}
+        </div>
+      </>}
     </div>
   )
 }

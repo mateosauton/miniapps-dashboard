@@ -5,15 +5,21 @@ import { useState } from 'react'
 import { cn, fmtNum, appCategoryColors } from '@/lib/utils'
 import type { WorldApp } from '@/types'
 
-interface Props { app: WorldApp }
+interface Props { app: WorldApp; onClick?: () => void }
 
-export function AppCard({ app }: Props) {
+export function AppCard({ app, onClick }: Props) {
   const badgeClass = appCategoryColors[app.category?.name ?? 'Other']
   const initials = app.short_name?.slice(0, 3).toUpperCase() ?? app.name.slice(0, 2).toUpperCase()
   const [imgFailed, setImgFailed] = useState(false)
 
   return (
-    <div className="bg-white border border-[#CECDCA] rounded-lg p-4 hover:border-[#9D9B96] hover:shadow-sm transition-all cursor-default">
+    <div
+      className="bg-white border border-[#CECDCA] rounded-lg p-4 hover:border-[#121212] hover:shadow-sm transition-all cursor-pointer"
+      onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => e.key === 'Enter' && onClick?.()}
+    >
       <div className="flex items-start gap-3 mb-3">
         <div className="relative w-10 h-10 rounded-xl overflow-hidden shrink-0 bg-[#e1dfda] flex items-center justify-center">
           {app.logo_img_url && !imgFailed ? (
