@@ -1,6 +1,5 @@
 import type { WorldApp, AppsApiResponse, EcosystemStats, CategoryStat } from '@/types'
-
-const API_URL = 'https://world-id-assets.com/api/v2/public/apps'
+import { API_URL, REVALIDATE_SECONDS } from '@/lib/config'
 
 // Slim down each app to only fields we use — keeps the response well under 2MB cache limit
 function slimApp(raw: WorldApp): WorldApp {
@@ -40,16 +39,30 @@ function slimApp(raw: WorldApp): WorldApp {
   }
 }
 
+export type FetchAppsResult =
+  | { ok: true; apps: WorldApp[] }
+  | { ok: false; apps: []; error: string }
+
 export async function fetchApps(): Promise<WorldApp[]> {
+  const result = await fetchAppsSafe()
+  return result.apps
+}
+
+export async function fetchAppsSafe(): Promise<FetchAppsResult> {
   try {
-    const res = await fetch(API_URL, { next: { revalidate: 3600 } })
-    if (!res.ok) throw new Error(`API error: ${res.status}`)
+    const res = await fetch(API_URL, { next: { revalidate: REVALIDATE_SECONDS } })
+    if (!res.ok) {
+      const msg = `Apps API returned ${res.status} ${res.statusText}`
+      console.warn('[fetchApps]', msg, { url: API_URL })
+      return { ok: false, apps: [], error: msg }
+    }
     const data: AppsApiResponse = await res.json()
-    const raw = data.app_rankings.top_apps ?? []
-    return raw.map((a) => slimApp(a))
+    const raw = data.app_rankings?.top_apps ?? []
+    return { ok: true, apps: raw.map((a) => slimApp(a)) }
   } catch (err) {
-    console.error('fetchApps failed:', err)
-    return []
+    const msg = err instanceof Error ? err.message : String(err)
+    console.warn('[fetchApps] fetch failed:', msg, { url: API_URL })
+    return { ok: false, apps: [], error: msg }
   }
 }
 

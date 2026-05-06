@@ -6,6 +6,7 @@ import { cn, commandCategoryColors, sdkColors } from '@/lib/utils'
 import { ParamsTable, ReturnsTable } from './ParamsTable'
 import { CodeBlock } from './CodeBlock'
 import { UIKitSection } from './UIKitSection'
+import { COMMAND_CATEGORIES } from '@/lib/config'
 import type { MiniKitCommand, CommandSDK } from '@/types'
 
 const SDK_TABS: { key: CommandSDK | 'all' | 'uikit'; label: string }[] = [
@@ -16,7 +17,7 @@ const SDK_TABS: { key: CommandSDK | 'all' | 'uikit'; label: string }[] = [
   { key: 'uikit', label: 'UI Kit' },
 ]
 
-const CAT_TABS = ['All', 'auth', 'payments', 'signing', 'messaging', 'permissions', 'notifications', 'ux']
+const CAT_TABS = COMMAND_CATEGORIES
 
 interface Props { commands: MiniKitCommand[] }
 

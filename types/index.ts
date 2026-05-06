@@ -20,7 +20,7 @@ export interface WorldApp {
   unique_users: number
   app_rating: number
   impressions: number
-  verification_status: string
+  verification_status: 'verified' | 'unverified' | (string & {})
   is_for_humans_only: boolean
   is_android_only: boolean
   app_mode: 'native' | 'mini-app'

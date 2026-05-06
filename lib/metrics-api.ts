@@ -1,6 +1,5 @@
 import type { AppMetrics } from '@/types'
-
-const METRICS_URL = 'https://metrics.worldcoin.org/miniapps/stats/data.json'
+import { METRICS_URL, REVALIDATE_SECONDS } from '@/lib/config'
 
 interface RawMetricEntry {
   app_id: string
@@ -20,8 +19,11 @@ function sumValues(arr: { value: number }[] | null | undefined): number {
 
 export async function fetchMetrics(): Promise<Map<string, AppMetrics>> {
   try {
-    const res = await fetch(METRICS_URL, { next: { revalidate: 3600 } })
-    if (!res.ok) throw new Error(`Metrics API error: ${res.status}`)
+    const res = await fetch(METRICS_URL, { next: { revalidate: REVALIDATE_SECONDS } })
+    if (!res.ok) {
+      console.warn('[fetchMetrics] API returned', res.status, res.statusText, { url: METRICS_URL })
+      return new Map()
+    }
     const data: RawMetricEntry[] = await res.json()
     const map = new Map<string, AppMetrics>()
     for (const entry of data) {
@@ -36,7 +38,8 @@ export async function fetchMetrics(): Promise<Map<string, AppMetrics>> {
     }
     return map
   } catch (err) {
-    console.error('fetchMetrics failed:', err)
+    const msg = err instanceof Error ? err.message : String(err)
+    console.warn('[fetchMetrics] fetch failed:', msg, { url: METRICS_URL })
     return new Map()
   }
 }

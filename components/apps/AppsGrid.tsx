@@ -3,9 +3,8 @@
 import { useState, useMemo } from 'react'
 import { AppCard } from './AppCard'
 import { AppDetailDrawer } from './AppDetailDrawer'
+import { APP_CATEGORIES } from '@/lib/config'
 import type { WorldApp } from '@/types'
-
-const CATEGORIES = ['All', 'Tokens', 'Finance', 'Gaming', 'Earn', 'Business', 'Other']
 const SORTS = [
   { key: 'users', label: 'Users' },
   { key: 'rating', label: 'Rating' },
@@ -91,7 +90,7 @@ export function AppsGrid({ apps }: Props) {
 
       {/* Category tabs */}
       <div className="flex gap-1 flex-wrap mb-4">
-        {CATEGORIES.map((c) => {
+        {APP_CATEGORIES.map((c) => {
           const count = c === 'All' ? apps.length : apps.filter((a) => a.category?.name === c).length
           return (
             <button
