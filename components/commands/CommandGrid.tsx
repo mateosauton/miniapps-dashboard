@@ -9,8 +9,7 @@ import { UIKitSection } from './UIKitSection'
 import { COMMAND_CATEGORIES } from '@/lib/config'
 import type { MiniKitCommand, CommandSDK } from '@/types'
 
-const SDK_TABS: { key: CommandSDK | 'all' | 'uikit'; label: string }[] = [
-  { key: 'all', label: 'All' },
+const SDK_TABS: { key: CommandSDK | 'uikit'; label: string }[] = [
   { key: 'minikit', label: 'MiniKit' },
   { key: 'idkit', label: 'IDKit' },
   { key: 'agentkit', label: 'AgentKit' },
@@ -22,13 +21,13 @@ const CAT_TABS = COMMAND_CATEGORIES
 interface Props { commands: MiniKitCommand[] }
 
 export function CommandGrid({ commands }: Props) {
-  const [sdk, setSdk] = useState<CommandSDK | 'all' | 'uikit'>('all')
+  const [sdk, setSdk] = useState<CommandSDK | 'uikit'>('minikit')
   const [cat, setCat] = useState('All')
   const [openSlug, setOpenSlug] = useState<string | null>(null)
 
   const filtered = commands.filter((c) => {
     if (sdk === 'uikit') return false
-    if (sdk !== 'all' && c.sdk !== sdk) return false
+    if (c.sdk !== sdk) return false
     if (cat !== 'All' && c.category !== cat) return false
     return true
   })
@@ -44,7 +43,7 @@ export function CommandGrid({ commands }: Props) {
             className={cn(
               'px-3 py-1.5 rounded text-[12.5px] font-semibold transition-colors',
               sdk === t.key
-                ? t.key === 'all' || t.key === 'uikit' ? 'bg-[#121212] text-white' : sdkColors[t.key as CommandSDK]
+                ? t.key === 'uikit' ? 'bg-[#121212] text-white' : sdkColors[t.key as CommandSDK]
                 : 'bg-[#e1dfda] text-[#373635] hover:bg-[#CECDCA]'
             )}
           >
