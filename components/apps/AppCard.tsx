@@ -3,11 +3,11 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import { cn, fmtNum, appCategoryColors } from '@/lib/utils'
-import type { WorldApp } from '@/types'
+import type { WorldApp, AppMetrics } from '@/types'
 
-interface Props { app: WorldApp; onClick?: () => void }
+interface Props { app: WorldApp; metrics?: AppMetrics; onClick?: () => void }
 
-export function AppCard({ app, onClick }: Props) {
+export function AppCard({ app, metrics, onClick }: Props) {
   const badgeClass = appCategoryColors[app.category?.name ?? 'Other']
   const initials = app.short_name?.slice(0, 3).toUpperCase() ?? app.name.slice(0, 2).toUpperCase()
   const [imgFailed, setImgFailed] = useState(false)
@@ -63,7 +63,7 @@ export function AppCard({ app, onClick }: Props) {
         </p>
       )}
 
-      <div className="grid grid-cols-3 gap-2 pt-2 border-t border-[#f9f9f8]">
+      <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[#f9f9f8]">
         <div className="text-center">
           <div className="text-[13px] font-semibold text-[#121212]">{fmtNum(app.unique_users)}</div>
           <div className="text-[10px] text-[#9D9B96]">users</div>
@@ -77,6 +77,12 @@ export function AppCard({ app, onClick }: Props) {
             {app.supported_countries?.length ?? 0}
           </div>
           <div className="text-[10px] text-[#9D9B96]">countries</div>
+        </div>
+        <div className="text-center">
+          <div className="text-[13px] font-semibold text-[#121212]">
+            {metrics ? fmtNum(metrics.impressions7d) : '—'}
+          </div>
+          <div className="text-[10px] text-[#9D9B96]">7d impr.</div>
         </div>
       </div>
     </div>

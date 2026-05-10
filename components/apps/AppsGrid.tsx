@@ -4,16 +4,16 @@ import { useState, useMemo } from 'react'
 import { AppCard } from './AppCard'
 import { AppDetailDrawer } from './AppDetailDrawer'
 import { APP_CATEGORIES } from '@/lib/config'
-import type { WorldApp } from '@/types'
+import type { WorldApp, AppMetrics } from '@/types'
 const SORTS = [
   { key: 'users', label: 'Users' },
   { key: 'rating', label: 'Rating' },
   { key: 'impressions', label: 'Impressions' },
 ] as const
 
-interface Props { apps: WorldApp[] }
+interface Props { apps: WorldApp[]; metricsMap?: Map<string, AppMetrics> }
 
-export function AppsGrid({ apps }: Props) {
+export function AppsGrid({ apps, metricsMap }: Props) {
   const [search, setSearch] = useState('')
   const [cat, setCat] = useState('All')
   const [humansOnly, setHumansOnly] = useState(false)
@@ -120,12 +120,12 @@ export function AppsGrid({ apps }: Props) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {filtered.map((app) => (
-            <AppCard key={app.app_id} app={app} onClick={() => setSelectedApp(app)} />
+            <AppCard key={app.app_id} app={app} metrics={metricsMap?.get(app.app_id)} onClick={() => setSelectedApp(app)} />
           ))}
         </div>
       )}
 
-      <AppDetailDrawer app={selectedApp} onClose={() => setSelectedApp(null)} />
+      <AppDetailDrawer app={selectedApp} metrics={selectedApp ? metricsMap?.get(selectedApp.app_id) : undefined} onClose={() => setSelectedApp(null)} />
     </div>
   )
 }
