@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
-import { fetchApps } from '@/lib/api'
+import { fetchAppsSafe } from '@/lib/api'
 import { AppsGrid } from '@/components/apps/AppsGrid'
+import { ErrorBanner } from '@/components/ui/ErrorBanner'
 
 export const metadata: Metadata = {
   title: 'App Catalog — World Dev Dashboard',
@@ -8,10 +9,13 @@ export const metadata: Metadata = {
 }
 
 export default async function AppsPage() {
-  const apps = await fetchApps()
+  const result = await fetchAppsSafe()
   return (
-    <div className="max-w-[1400px]">
-      <AppsGrid apps={apps} />
+    <div className="max-w-[1400px] space-y-4">
+      {!result.ok && (
+        <ErrorBanner message={`App catalog could not be loaded — ${result.error}. Please try again later.`} />
+      )}
+      <AppsGrid apps={result.apps} />
     </div>
   )
 }

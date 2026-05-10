@@ -17,12 +17,17 @@ function sumValues(arr: { value: number }[] | null | undefined): number {
   return arr.reduce((s, x) => s + (x.value ?? 0), 0)
 }
 
-export async function fetchMetrics(): Promise<Map<string, AppMetrics>> {
+export type FetchMetricsResult =
+  | { ok: true; map: Map<string, AppMetrics> }
+  | { ok: false; map: Map<string, AppMetrics>; error: string }
+
+export async function fetchMetricsSafe(): Promise<FetchMetricsResult> {
   try {
     const res = await fetch(METRICS_URL, { next: { revalidate: REVALIDATE_SECONDS } })
     if (!res.ok) {
-      console.warn('[fetchMetrics] API returned', res.status, res.statusText, { url: METRICS_URL })
-      return new Map()
+      const msg = `Metrics API returned ${res.status} ${res.statusText}`
+      console.warn('[fetchMetrics]', msg, { url: METRICS_URL })
+      return { ok: false, map: new Map(), error: msg }
     }
     const data: RawMetricEntry[] = await res.json()
     const map = new Map<string, AppMetrics>()
@@ -36,12 +41,17 @@ export async function fetchMetrics(): Promise<Map<string, AppMetrics>> {
         optInRate: entry.notification_opt_in_rate ?? null,
       })
     }
-    return map
+    return { ok: true, map }
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
     console.warn('[fetchMetrics] fetch failed:', msg, { url: METRICS_URL })
-    return new Map()
+    return { ok: false, map: new Map(), error: msg }
   }
+}
+
+export async function fetchMetrics(): Promise<Map<string, AppMetrics>> {
+  const result = await fetchMetricsSafe()
+  return result.map
 }
 
 export function sumNewUsers7d(metrics: Map<string, AppMetrics>): number {
