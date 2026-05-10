@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import { fetchApps, computeStats } from '@/lib/api'
-import { fetchMetrics, sumNewUsers7d, sumTotalOpens } from '@/lib/metrics-api'
+import { fetchAppsSafe, computeStats } from '@/lib/api'
+import { fetchMetricsSafe, sumNewUsers7d, sumTotalOpens } from '@/lib/metrics-api'
 import { saveSnapshot, getNewApps, getOldestApps } from '@/lib/snapshot'
 import { StatsGrid } from '@/components/overview/StatsGrid'
 import { CategoryBreakdown } from '@/components/overview/CategoryBreakdown'
@@ -9,6 +9,7 @@ import { EcosystemHighlights } from '@/components/overview/EcosystemHighlights'
 import { NewAppsBox } from '@/components/overview/NewAppsBox'
 import { AppSpotlight } from '@/components/overview/AppSpotlight'
 import { FastestGrowing } from '@/components/overview/FastestGrowing'
+import { ErrorBanner } from '@/components/ui/ErrorBanner'
 
 export const metadata: Metadata = {
   title: 'Ecosystem Overview — World Dev Dashboard',
@@ -16,7 +17,9 @@ export const metadata: Metadata = {
 }
 
 export default async function OverviewPage() {
-  const [apps, metricsMap] = await Promise.all([fetchApps(), fetchMetrics()])
+  const [appsResult, metricsResult] = await Promise.all([fetchAppsSafe(), fetchMetricsSafe()])
+  const apps = appsResult.apps
+  const metricsMap = metricsResult.map
 
   // Persist snapshot for new-app detection (runs server-side)
   const newApps = getNewApps(apps)
@@ -29,6 +32,12 @@ export default async function OverviewPage() {
 
   return (
     <div className="space-y-4 max-w-[1400px]">
+      {!appsResult.ok && (
+        <ErrorBanner message={`App data could not be loaded — ${appsResult.error}. Stats may be incomplete.`} />
+      )}
+      {!metricsResult.ok && (
+        <ErrorBanner message="Growth and usage metrics are temporarily unavailable." />
+      )}
       <StatsGrid stats={stats} newUsers7d={newUsers7d} totalOpens={totalOpens} />
 
       {/* Spotlight row */}
