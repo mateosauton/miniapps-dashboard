@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { fetchAppsSafe } from '@/lib/api'
+import { fetchMetricsSafe } from '@/lib/metrics-api'
 import { AppsGrid } from '@/components/apps/AppsGrid'
 import { ErrorBanner } from '@/components/ui/ErrorBanner'
 
@@ -9,13 +10,13 @@ export const metadata: Metadata = {
 }
 
 export default async function AppsPage() {
-  const result = await fetchAppsSafe()
+  const [appsResult, metricsResult] = await Promise.all([fetchAppsSafe(), fetchMetricsSafe()])
   return (
     <div className="max-w-[1400px] space-y-4">
-      {!result.ok && (
-        <ErrorBanner message={`App catalog could not be loaded — ${result.error}. Please try again later.`} />
+      {!appsResult.ok && (
+        <ErrorBanner message={`App catalog could not be loaded — ${appsResult.error}. Please try again later.`} />
       )}
-      <AppsGrid apps={result.apps} />
+      <AppsGrid apps={appsResult.apps} metricsMap={metricsResult.map} />
     </div>
   )
 }

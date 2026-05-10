@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { cn, fmtNum, appCategoryColors } from '@/lib/utils'
-import type { WorldApp } from '@/types'
+import type { WorldApp, AppMetrics } from '@/types'
 
 interface Props {
   app: WorldApp | null
+  metrics?: AppMetrics
   onClose: () => void
 }
 
@@ -136,7 +137,7 @@ function ShowcaseGallery({ urls }: { urls: string[] }) {
   )
 }
 
-export function AppDetailDrawer({ app, onClose }: Props) {
+export function AppDetailDrawer({ app, metrics, onClose }: Props) {
   const [imgFailed, setImgFailed] = useState(false)
 
   useEffect(() => { setImgFailed(false) }, [app?.app_id])
@@ -287,16 +288,22 @@ export function AppDetailDrawer({ app, onClose }: Props) {
                 <StatBox label="countries" value={String(countries.length)} />
                 <StatBox label="languages" value={String(langs.length)} />
                 <StatBox label="cat. rank" value={app.category_ranking ? `#${app.category_ranking}` : '—'} />
+                {metrics && <StatBox label="users (7d)" value={fmtNum(metrics.users7d)} />}
+                {metrics && <StatBox label="new users (7d)" value={fmtNum(metrics.newUsers7d)} />}
+                {metrics && <StatBox label="impr. (7d)" value={fmtNum(metrics.impressions7d)} />}
               </div>
             </div>
 
             {/* Notifications */}
-            {(app.avg_notification_open_rate !== null || app.max_notifications_per_day > 0) && (
+            {(app.avg_notification_open_rate !== null || app.max_notifications_per_day > 0 || metrics?.optInRate != null) && (
               <div>
                 <SectionLabel>Notifications</SectionLabel>
                 <div className="grid grid-cols-2 gap-2">
                   {app.avg_notification_open_rate !== null && (
                     <StatBox label="avg open rate" value={`${(app.avg_notification_open_rate * 100).toFixed(1)}%`} />
+                  )}
+                  {metrics?.optInRate != null && (
+                    <StatBox label="opt-in rate (7d)" value={`${(metrics.optInRate * 100).toFixed(1)}%`} />
                   )}
                   {app.max_notifications_per_day > 0 && (
                     <StatBox label="max per day" value={String(app.max_notifications_per_day)} />
