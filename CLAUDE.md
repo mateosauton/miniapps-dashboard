@@ -62,3 +62,59 @@ Add entries to `data/commands.ts` as `MiniKitCommand` objects. The `llmPrompt` f
 ### DESIGN.md
 
 `DESIGN.md` is a YAML + Markdown design spec for the `@worldcoin/mini-apps-ui-kit-react` component library (not installed in this repo). The Commands page "UI Kit" tab renders a summary of it via `UIKitSection`. Do not delete this file.
+
+## Project Tracking
+
+All tasks, features, and bugs are tracked as GitHub Issues at:
+**https://github.com/mateosauton/miniapps-dashboard/issues**
+
+A GitHub Projects board at the same repo aggregates these into Backlog / In Progress / In Review / Done columns.
+
+**Always reference the relevant issue number in every commit and PR** using `(#N)` in the commit title. When a PR fully resolves an issue, put `Closes #N` in the PR body so the issue closes automatically on merge.
+
+Issue templates live in `.github/ISSUE_TEMPLATE/`: `feature.md`, `bug.md`, `task.md`.
+
+## Git Workflow
+
+Solo developer. `main` is always deployable (Vercel deploys from it). All work happens on short-lived feature branches.
+
+### Branch naming
+
+```
+feat/issue-<N>-<short-slug>    # new feature or enhancement
+fix/issue-<N>-<short-slug>     # bug fix
+task/issue-<N>-<short-slug>    # chore, refactor, internal improvement
+```
+
+Examples: `feat/issue-6-global-search`, `fix/issue-3-skeleton-loading`
+
+### Step-by-step
+
+1. Pick an issue from the board and move it to **In Progress**
+2. Branch off `main`:
+   ```bash
+   git checkout main && git pull origin main
+   git checkout -b feat/issue-6-global-search
+   ```
+3. Make commits using [Conventional Commits](https://www.conventionalcommits.org/):
+   ```
+   feat: add global command palette search (#6)
+   fix: skeleton layout shift on overview load (#3)
+   task: replace fs snapshot with Vercel KV (#9)
+   ```
+4. Push and open a PR:
+   - Title mirrors the commit message
+   - Body contains `Closes #N`
+   - Move the issue to **In Review**
+5. Merge to `main` (squash preferred to keep history clean)
+6. Delete the feature branch; issue auto-closes and moves to **Done**
+
+### Commit types
+
+| Type | When to use |
+|---|---|
+| `feat` | New user-facing feature |
+| `fix` | Bug fix |
+| `task` | Refactor, chore, internal improvement |
+| `docs` | CLAUDE.md, README, or comment-only changes |
+| `style` | Formatting, Tailwind class reorders — no logic change |
