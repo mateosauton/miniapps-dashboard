@@ -42,10 +42,10 @@ export default defineConfig({
     {
       // Production Next.js server using mock data (happy-path tests)
       command:
-        'NEXT_PUBLIC_API_URL=http://localhost:3333/apps NEXT_PUBLIC_METRICS_URL=http://localhost:3333/metrics npm start',
+        'NEXT_PUBLIC_API_URL=http://localhost:3333/apps NEXT_PUBLIC_METRICS_URL=http://localhost:3333/metrics npm run build && NEXT_PUBLIC_API_URL=http://localhost:3333/apps NEXT_PUBLIC_METRICS_URL=http://localhost:3333/metrics npm start',
       url: 'http://localhost:3000',
-      reuseExistingServer: !process.env.CI,
-      timeout: 30_000,
+      reuseExistingServer: false,
+      timeout: 180_000,
     },
     {
       // Dev server for error-state tests — no ISR cache, bad API URLs trigger ErrorBanner

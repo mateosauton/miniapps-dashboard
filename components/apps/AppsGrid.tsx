@@ -29,9 +29,9 @@ function escapeCsv(value: string | number): string {
   return text
 }
 
-interface Props { apps: WorldApp[]; metricsMap?: Map<string, AppMetrics> }
+interface Props { apps: WorldApp[]; metricsByAppId?: Record<string, AppMetrics> }
 
-export function AppsGrid({ apps, metricsMap }: Props) {
+export function AppsGrid({ apps, metricsByAppId }: Props) {
   const [search, setSearch] = useState('')
   const [cat, setCat] = useState('All')
   const [humansOnly, setHumansOnly] = useState(false)
@@ -106,12 +106,13 @@ export function AppsGrid({ apps, metricsMap }: Props) {
           <button
             type="button"
             onClick={() => setHumansOnly(!humansOnly)}
+            aria-label="Humans only"
             className="relative w-9 h-5 rounded-full transition-colors shrink-0"
             style={{ background: humansOnly ? '#121212' : '#CECDCA' }}
           >
             <span
               className="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform"
-              style={{ left: humansOnly ? '17px' : '2px' }}
+              style={{ left: humansOnly ? '17px' : '2px', background: '#ffffff' }}
             />
           </button>
           Humans only
@@ -124,6 +125,7 @@ export function AppsGrid({ apps, metricsMap }: Props) {
             <button
               key={s.key}
               onClick={() => setSort(s.key)}
+              aria-label={s.label}
               className={`px-2.5 py-1 rounded text-[12px] font-medium transition-colors ${
                 sort === s.key
                   ? 'bg-[#121212] text-white'
@@ -177,12 +179,12 @@ export function AppsGrid({ apps, metricsMap }: Props) {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {filtered.map((app) => (
-            <AppCard key={app.app_id} app={app} metrics={metricsMap?.get(app.app_id)} onClick={() => setSelectedApp(app)} />
+            <AppCard key={app.app_id} app={app} metrics={metricsByAppId?.[app.app_id]} onClick={() => setSelectedApp(app)} />
           ))}
         </div>
       )}
 
-      <AppDetailDrawer app={selectedApp} metrics={selectedApp ? metricsMap?.get(selectedApp.app_id) : undefined} onClose={() => setSelectedApp(null)} />
+      <AppDetailDrawer app={selectedApp} metrics={selectedApp ? metricsByAppId?.[selectedApp.app_id] : undefined} onClose={() => setSelectedApp(null)} />
     </div>
   )
 }

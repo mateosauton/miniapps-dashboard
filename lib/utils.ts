@@ -21,7 +21,7 @@ export const commandCategoryColors: Record<CommandCategory, string> = {
 }
 
 export const sdkColors: Record<CommandSDK, string> = {
-  minikit:   'bg-[#121212] text-[#f9f9f8]',
+  minikit:   'bg-[#121212] text-white',
   idkit:     'bg-[#007CFB] text-white',
   agentkit:  'bg-[#005BC4] text-white',
 }
