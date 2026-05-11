@@ -5,11 +5,29 @@ import { AppCard } from './AppCard'
 import { AppDetailDrawer } from './AppDetailDrawer'
 import { APP_CATEGORIES } from '@/lib/config'
 import type { WorldApp, AppMetrics } from '@/types'
+
 const SORTS = [
   { key: 'users', label: 'Users' },
   { key: 'rating', label: 'Rating' },
   { key: 'impressions', label: 'Impressions' },
 ] as const
+
+const CSV_COLUMNS = [
+  'name',
+  'team_name',
+  'category',
+  'unique_users',
+  'app_rating',
+  'impressions',
+  'verification_status',
+  'supported_countries_count',
+] as const
+
+function escapeCsv(value: string | number): string {
+  const text = String(value)
+  if (/[",\n]/.test(text)) return `"${text.replace(/"/g, '""')}"`
+  return text
+}
 
 interface Props { apps: WorldApp[]; metricsMap?: Map<string, AppMetrics> }
 
@@ -36,6 +54,36 @@ export function AppsGrid({ apps, metricsMap }: Props) {
       return b.impressions - a.impressions
     })
   }, [apps, search, cat, humansOnly, sort])
+
+  function downloadCsv() {
+    const lines = [
+      CSV_COLUMNS.join(','),
+      ...filtered.map((app) =>
+        [
+          app.name,
+          app.team_name,
+          app.category?.name ?? 'Other',
+          app.unique_users,
+          app.app_rating,
+          app.impressions,
+          app.verification_status,
+          app.supported_countries?.length ?? 0,
+        ].map(escapeCsv).join(',')
+      ),
+    ]
+    const csv = `${lines.join('\n')}\n`
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    const stamp = new Date().toISOString().slice(0, 10)
+
+    link.href = url
+    link.download = `apps-export-${stamp}.csv`
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+    URL.revokeObjectURL(url)
+  }
 
   return (
     <div>
@@ -86,6 +134,15 @@ export function AppsGrid({ apps, metricsMap }: Props) {
             </button>
           ))}
         </div>
+
+        <button
+          type="button"
+          onClick={downloadCsv}
+          disabled={filtered.length === 0}
+          className="ml-auto px-3 py-1.5 rounded-md text-[12px] font-semibold bg-[#EBF5FF] text-[#005BC4] border border-[#9DD4FD] hover:bg-[#D6EAFF] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          Download CSV
+        </button>
       </div>
 
       {/* Category tabs */}
