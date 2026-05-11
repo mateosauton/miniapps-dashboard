@@ -14,7 +14,7 @@ const cards = (stats: EcosystemStats, newUsers7d: number, totalOpens: number) =>
 
 export function StatsGrid({ stats, newUsers7d, totalOpens }: Props) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-5">
+    <div data-testid="stats-grid" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-5">
       {cards(stats, newUsers7d, totalOpens).map((c) => (
         <div key={c.label} className="bg-white border border-[#CECDCA] rounded-lg p-3.5">
           <div className="text-[10.5px] font-semibold text-[#9D9B96] uppercase tracking-wider mb-1.5">

@@ -14,6 +14,7 @@ export function AppCard({ app, metrics, onClick }: Props) {
 
   return (
     <div
+      data-testid="app-card"
       className="bg-white border border-[#CECDCA] rounded-lg p-4 hover:border-[#121212] hover:shadow-sm transition-all cursor-pointer"
       onClick={onClick}
       role="button"
