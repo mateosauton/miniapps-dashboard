@@ -11,13 +11,17 @@ export function AppCard({ app, metrics, onClick }: Props) {
   const badgeClass = appCategoryColors[app.category?.name ?? 'Other']
   const initials = app.short_name?.slice(0, 3).toUpperCase() ?? app.name.slice(0, 2).toUpperCase()
   const [imgFailed, setImgFailed] = useState(false)
+  const cardDescription = app.world_app_description
+    ?.replace(new RegExp(`^${app.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b[:,-]?\\s*`, 'i'), '')
+    .replace(/^native\s+/i, '')
 
   return (
     <div
       data-testid="app-card"
       className="bg-white border border-[#CECDCA] rounded-lg p-4 hover:border-[#121212] hover:shadow-sm transition-all cursor-pointer"
       onClick={onClick}
-      role="button"
+      role="article"
+      aria-label={`Open details for ${app.name}`}
       tabIndex={0}
       onKeyDown={(e) => e.key === 'Enter' && onClick?.()}
     >
@@ -58,9 +62,9 @@ export function AppCard({ app, metrics, onClick }: Props) {
         )}
       </div>
 
-      {app.world_app_description && (
+      {cardDescription && (
         <p className="text-[11.5px] text-[#9D9B96] leading-relaxed mb-3 line-clamp-2">
-          {app.world_app_description}
+          {cardDescription}
         </p>
       )}
 

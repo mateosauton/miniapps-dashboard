@@ -33,7 +33,7 @@ export default async function OverviewPage() {
   return (
     <div className="space-y-4 max-w-[1400px]">
       {!appsResult.ok && (
-        <ErrorBanner message={`App data could not be loaded — ${appsResult.error}. Stats may be incomplete.`} />
+        <ErrorBanner testId="error-banner" message={`App data could not be loaded — ${appsResult.error}. Stats may be incomplete.`} />
       )}
       {!metricsResult.ok && (
         <ErrorBanner message="Growth and usage metrics are temporarily unavailable." />

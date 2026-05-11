@@ -4,7 +4,7 @@ import type { EcosystemStats } from '@/types'
 interface Props { stats: EcosystemStats; newUsers7d: number; totalOpens: number }
 
 const cards = (stats: EcosystemStats, newUsers7d: number, totalOpens: number) => [
-  { label: 'Total Apps',        value: stats.totalApps.toString(),      meta: '6 categories' },
+  { label: 'Total Apps',        value: stats.totalApps.toString(),      meta: '6 segments' },
   { label: 'Mini App Opens',    value: fmtNum(totalOpens),              meta: 'all-time cumulative' },
   { label: 'Impressions',       value: fmtNum(stats.totalImpressions),  meta: 'app store views' },
   { label: 'Avg Rating',        value: stats.avgRating.toFixed(2),      meta: 'across all apps' },

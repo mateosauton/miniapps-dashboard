@@ -40,6 +40,7 @@ export function CommandGrid({ commands }: Props) {
           <button
             key={t.key}
             onClick={() => { setSdk(t.key); setOpenSlug(null) }}
+            aria-label={t.label}
             className={cn(
               'px-3 py-1.5 rounded text-[12.5px] font-semibold transition-colors',
               sdk === t.key
@@ -62,6 +63,7 @@ export function CommandGrid({ commands }: Props) {
             <button
               key={c}
               onClick={() => setCat(c)}
+              aria-label={c}
               className={cn(
                 'px-2.5 py-1 rounded text-[12px] font-medium transition-colors capitalize',
                 cat === c ? 'bg-[#007CFB] text-white' : 'bg-[#f9f9f8] text-[#373635] hover:bg-[#e1dfda]'
@@ -88,6 +90,7 @@ export function CommandGrid({ commands }: Props) {
             >
               {/* Header */}
               <button
+                aria-label="Toggle command details"
                 className="w-full text-left px-4 py-3.5 hover:bg-[#f9f9f8] transition-colors"
                 onClick={() => setOpenSlug(isOpen ? null : cmd.slug)}
               >

@@ -19,7 +19,7 @@ export function MobileNav() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger className="lg:hidden p-2 rounded-md hover:bg-[#e1dfda] transition-colors" aria-label="Open menu">
+      <SheetTrigger className="p-2 rounded-md hover:bg-[#e1dfda] transition-colors" aria-label="Open menu">
         <div className="w-4 h-0.5 bg-[#121212] mb-1" />
         <div className="w-4 h-0.5 bg-[#121212] mb-1" />
         <div className="w-4 h-0.5 bg-[#121212]" />

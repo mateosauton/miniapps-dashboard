@@ -236,7 +236,7 @@ export function UIKitSection() {
               }}
               className="flex items-center gap-1.5 px-3 py-1.5 bg-[#121212] text-white text-[12px] font-semibold rounded-md hover:bg-[#2D2C2C] transition-colors"
             >
-              Copy install
+              Copy npm command
             </button>
           </div>
         </div>
@@ -330,7 +330,7 @@ export function UIKitSection() {
             <div className="space-y-3">
               <div className="flex gap-3 items-center flex-wrap">
                 <UKButton size="lg">Large (default)</UKButton>
-                <UKButton size="sm">Small</UKButton>
+                <UKButton size="sm">Compact</UKButton>
                 <UKButton size="icon">✕</UKButton>
               </div>
               <UKButton fullWidth>Full width CTA</UKButton>

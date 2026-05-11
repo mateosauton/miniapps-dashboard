@@ -139,6 +139,7 @@ function ShowcaseGallery({ urls }: { urls: string[] }) {
 
 export function AppDetailDrawer({ app, metrics, onClose }: Props) {
   const [imgFailed, setImgFailed] = useState(false)
+  const titleId = app ? `app-detail-title-${app.app_id}` : undefined
 
   useEffect(() => { setImgFailed(false) }, [app?.app_id])
 
@@ -178,7 +179,12 @@ export function AppDetailDrawer({ app, metrics, onClose }: Props) {
       <div className="fixed inset-0 bg-black/30 z-40" onClick={onClose} />
 
       {/* Panel */}
-      <div className="fixed right-0 top-0 h-full w-full max-w-[440px] bg-white z-50 shadow-2xl flex flex-col overflow-hidden">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className="fixed right-0 top-0 h-full w-full max-w-[440px] bg-white z-50 shadow-2xl flex flex-col overflow-hidden"
+      >
 
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-[#e1dfda] shrink-0">
@@ -192,7 +198,7 @@ export function AppDetailDrawer({ app, metrics, onClose }: Props) {
               )}
             </div>
             <div>
-              <div className="font-semibold text-[14px] text-[#121212] leading-tight">{app.name}</div>
+              <div id={titleId} className="font-semibold text-[14px] text-[#121212] leading-tight">{app.name}</div>
               <div className="text-[12px] text-[#9D9B96] mt-0.5">{app.team_name}</div>
             </div>
           </div>

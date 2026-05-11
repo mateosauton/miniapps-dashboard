@@ -11,12 +11,13 @@ export const metadata: Metadata = {
 
 export default async function AppsPage() {
   const [appsResult, metricsResult] = await Promise.all([fetchAppsSafe(), fetchMetricsSafe()])
+  const metricsByAppId = Object.fromEntries(metricsResult.map)
   return (
     <div className="max-w-[1400px] space-y-4">
       {!appsResult.ok && (
-        <ErrorBanner message={`App catalog could not be loaded — ${appsResult.error}. Please try again later.`} />
+        <ErrorBanner testId="error-banner" message={`App catalog could not be loaded — ${appsResult.error}. Please try again later.`} />
       )}
-      <AppsGrid apps={appsResult.apps} metricsMap={metricsResult.map} />
+      <AppsGrid apps={appsResult.apps} metricsByAppId={metricsByAppId} />
     </div>
   )
 }
