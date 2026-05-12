@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Toaster } from '@/components/ui/sonner'
 import { AppSidebar } from '@/components/layout/AppSidebar'
 import { TopBar } from '@/components/layout/TopBar'
+import '@worldcoin/mini-apps-ui-kit-react/styles.css'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -13,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <div className="flex min-h-screen bg-[#f9f9f8]">
+        <div className="flex min-h-screen bg-background">
           <AppSidebar />
           <div className="flex flex-1 flex-col overflow-hidden">
             <TopBar />
