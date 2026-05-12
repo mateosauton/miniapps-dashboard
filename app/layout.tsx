@@ -1,6 +1,10 @@
 import type { Metadata } from 'next'
+import { fetchAppsSafe } from '@/lib/api'
+import { COMMANDS } from '@/data/commands'
+import { GUIDE_SECTIONS } from '@/data/guide'
 import { Toaster } from '@/components/ui/sonner'
 import { AppSidebar } from '@/components/layout/AppSidebar'
+import { CommandPalette } from '@/components/layout/CommandPalette'
 import { TopBar } from '@/components/layout/TopBar'
 import './globals.css'
 
@@ -9,14 +13,20 @@ export const metadata: Metadata = {
   description: 'Live ecosystem data and SDK reference for World App Mini-Apps developers.',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const appsResult = await fetchAppsSafe()
+
   return (
     <html lang="en">
       <body>
         <div className="flex min-h-screen bg-[#f9f9f8]">
           <AppSidebar />
           <div className="flex flex-1 flex-col overflow-hidden">
-            <TopBar />
+            <TopBar
+              paletteTrigger={
+                <CommandPalette apps={appsResult.apps} commands={COMMANDS} sections={GUIDE_SECTIONS} />
+              }
+            />
             <main className="flex-1 overflow-y-auto p-4 lg:p-6">{children}</main>
           </div>
         </div>

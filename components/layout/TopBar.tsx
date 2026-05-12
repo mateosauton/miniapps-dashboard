@@ -1,5 +1,6 @@
 'use client'
 
+import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { MobileNav } from './MobileNav'
@@ -11,7 +12,7 @@ const PAGE_META: Record<string, { title: string; sub: string }> = {
   '/guide': { title: 'Implementation Guide', sub: 'Step-by-step developer reference' },
 }
 
-export function TopBar() {
+export function TopBar({ paletteTrigger }: { paletteTrigger?: ReactNode }) {
   const pathname = usePathname()
   const base = '/' + (pathname.split('/')[1] ?? '')
   const meta = PAGE_META[base] ?? { title: 'Dashboard', sub: 'World App Mini-Apps' }
@@ -32,9 +33,12 @@ export function TopBar() {
             <div className="text-[11.5px] text-[#9D9B96] mt-0.5">{meta.sub}</div>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 text-[11.5px] font-medium text-[#007CFB] bg-[#EBF5FF] border border-[#9DD4FD] px-2.5 py-1 rounded-full">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#007CFB]" />
-          Live data
+        <div className="flex items-center gap-2">
+          {paletteTrigger}
+          <div className="flex items-center gap-1.5 text-[11.5px] font-medium text-[#007CFB] bg-[#EBF5FF] border border-[#9DD4FD] px-2.5 py-1 rounded-full">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#007CFB]" />
+            Live data
+          </div>
         </div>
       </div>
 

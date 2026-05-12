@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { AppCard } from './AppCard'
 import { AppDetailDrawer } from './AppDetailDrawer'
 import { APP_CATEGORIES } from '@/lib/config'
@@ -29,10 +29,14 @@ function escapeCsv(value: string | number): string {
   return text
 }
 
-interface Props { apps: WorldApp[]; metricsByAppId?: Record<string, AppMetrics> }
+interface Props {
+  apps: WorldApp[]
+  metricsByAppId?: Record<string, AppMetrics>
+  initialSearch?: string
+}
 
-export function AppsGrid({ apps, metricsByAppId }: Props) {
-  const [search, setSearch] = useState('')
+export function AppsGrid({ apps, metricsByAppId, initialSearch = '' }: Props) {
+  const [search, setSearch] = useState(initialSearch)
   const [cat, setCat] = useState('All')
   const [humansOnly, setHumansOnly] = useState(false)
   const [sort, setSort] = useState<'users' | 'rating' | 'impressions'>('users')

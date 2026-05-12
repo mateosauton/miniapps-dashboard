@@ -18,12 +18,18 @@ const SDK_TABS: { key: CommandSDK | 'uikit'; label: string }[] = [
 
 const CAT_TABS = COMMAND_CATEGORIES
 
-interface Props { commands: MiniKitCommand[] }
+interface Props {
+  commands: MiniKitCommand[]
+  initialCommandSlug?: string
+}
 
-export function CommandGrid({ commands }: Props) {
-  const [sdk, setSdk] = useState<CommandSDK | 'uikit'>('minikit')
-  const [cat, setCat] = useState('All')
-  const [openSlug, setOpenSlug] = useState<string | null>(null)
+export function CommandGrid({ commands, initialCommandSlug }: Props) {
+  const initialCommand = initialCommandSlug
+    ? commands.find((entry) => entry.slug === initialCommandSlug)
+    : null
+  const [sdk, setSdk] = useState<CommandSDK | 'uikit'>(initialCommand?.sdk ?? 'minikit')
+  const [cat, setCat] = useState(initialCommand?.category ?? 'All')
+  const [openSlug, setOpenSlug] = useState<string | null>(initialCommand?.slug ?? null)
 
   const filtered = commands.filter((c) => {
     if (sdk === 'uikit') return false
