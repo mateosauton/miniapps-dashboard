@@ -14,14 +14,14 @@ const cards = (stats: EcosystemStats, newUsers7d: number, totalOpens: number) =>
 
 export function StatsGrid({ stats, newUsers7d, totalOpens }: Props) {
   return (
-    <div data-testid="stats-grid" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-5">
+    <div data-testid="stats-grid" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2.5 mb-4">
       {cards(stats, newUsers7d, totalOpens).map((c) => (
-        <div key={c.label} className="bg-white border border-[#CECDCA] rounded-lg p-3.5">
-          <div className="text-[10.5px] font-semibold text-[#9D9B96] uppercase tracking-wider mb-1.5">
+        <div key={c.label} className="bg-gray-0 border border-gray-200 rounded-lg p-3">
+          <div className="text-[9.5px] font-semibold text-gray-500 uppercase tracking-wider mb-1">
             {c.label}
           </div>
-          <div className="text-[22px] font-semibold text-[#121212] leading-none">{c.value}</div>
-          <div className="text-[11px] text-[#9D9B96] mt-1">{c.meta}</div>
+          <div className="text-[18px] font-semibold text-gray-900 leading-none">{c.value}</div>
+          <div className="text-[10.5px] text-gray-500 mt-1">{c.meta}</div>
         </div>
       ))}
     </div>

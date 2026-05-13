@@ -2,15 +2,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* ── World Pro font ─────────────────────────────────────────────────────────── */
-@font-face {
-  font-family: WorldProMVP;
-  src: url("https://world.org/fonts/WorldProMVPVF-v2.ttf") format("truetype");
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-}
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -43,61 +34,78 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-gray-0: rgb(var(--gray-0));
+  --color-gray-50: rgb(var(--gray-50));
+  --color-gray-100: rgb(var(--gray-100));
+  --color-gray-200: rgb(var(--gray-200));
+  --color-gray-300: rgb(var(--gray-300));
+  --color-gray-350: rgb(var(--gray-350));
+  --color-gray-400: rgb(var(--gray-400));
+  --color-gray-500: rgb(var(--gray-500));
+  --color-gray-700: rgb(var(--gray-700));
+  --color-gray-900: rgb(var(--gray-900));
+  --color-success-100: rgb(var(--success-100));
+  --color-success-600: rgb(var(--success-600));
+  --color-success-700: rgb(var(--success-700));
+  --color-error-100: rgb(var(--error-100));
+  --color-error-600: rgb(var(--error-600));
+  --color-error-700: rgb(var(--error-700));
+  --color-warning-100: rgb(var(--warning-100));
+  --color-warning-600: rgb(var(--warning-600));
+  --color-warning-700: rgb(var(--warning-700));
+  --color-info-100: rgb(var(--info-100));
+  --color-info-600: rgb(var(--info-600));
+  --color-info-700: rgb(var(--info-700));
+  --color-world-blue-primary: rgb(var(--world-blue-primary));
+  --color-world-blue-secondary: rgb(var(--world-blue-secondary));
+  --color-worldcoin-primary: rgb(var(--worldcoin-primary));
+  --color-worldcoin-secondary: rgb(var(--worldcoin-secondary));
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.4);
 }
 
-/* ── World Brand palette ────────────────────────────────────────────────────── */
+/* ── Mini Apps UI Kit palette bridge ────────────────────────────────────────── */
 :root {
-  --font-world: WorldProMVP, "Noto Sans JP", "Noto Sans SC", Helvetica, sans-serif;
+  --font-world: "TWK Lausanne", "Noto Sans JP", "Noto Sans SC", Helvetica, sans-serif;
 
-  /* Backgrounds */
-  --background: #f9f9f8;
-  --foreground: #121212;
+  --background: rgb(var(--gray-50));
+  --foreground: rgb(var(--gray-900));
 
-  /* Cards / surfaces */
-  --card: #ffffff;
-  --card-foreground: #121212;
-  --popover: #ffffff;
-  --popover-foreground: #121212;
+  --card: rgb(var(--gray-0));
+  --card-foreground: rgb(var(--gray-900));
+  --popover: rgb(var(--gray-0));
+  --popover-foreground: rgb(var(--gray-900));
 
-  /* Primary = World Blue */
-  --primary: #007CFB;
-  --primary-foreground: #ffffff;
+  --primary: rgb(var(--worldcoin-primary));
+  --primary-foreground: rgb(var(--gray-0));
 
-  /* Secondary = light grey */
-  --secondary: #e1dfda;
-  --secondary-foreground: #2D2C2C;
+  --secondary: rgb(var(--gray-100));
+  --secondary-foreground: rgb(var(--gray-900));
 
-  /* Muted */
-  --muted: #e1dfda;
-  --muted-foreground: #9D9B96;
+  --muted: rgb(var(--gray-100));
+  --muted-foreground: rgb(var(--gray-500));
 
-  /* Accent */
-  --accent: #EBF5FF;
-  --accent-foreground: #005BC4;
+  --accent: rgb(var(--info-100));
+  --accent-foreground: rgb(var(--info-700));
 
-  /* Destructive = dark grey (no red in World brand) */
-  --destructive: #2D2C2C;
+  --destructive: rgb(var(--error-600));
 
-  /* Borders + inputs */
-  --border: #CECDCA;
-  --input: #CECDCA;
-  --ring: #007CFB;
+  --border: rgb(var(--gray-200));
+  --input: rgb(var(--gray-200));
+  --ring: rgb(var(--gray-900));
 
-  --radius: 0.5rem;
+  --radius: 0.625rem;
 
-  /* Sidebar */
-  --sidebar: #ffffff;
-  --sidebar-foreground: #121212;
-  --sidebar-primary: #007CFB;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f9f9f8;
-  --sidebar-accent-foreground: #121212;
-  --sidebar-border: #CECDCA;
-  --sidebar-ring: #007CFB;
+  --sidebar: rgb(var(--gray-0));
+  --sidebar-foreground: rgb(var(--gray-900));
+  --sidebar-primary: rgb(var(--gray-900));
+  --sidebar-primary-foreground: rgb(var(--gray-0));
+  --sidebar-accent: rgb(var(--gray-50));
+  --sidebar-accent-foreground: rgb(var(--gray-900));
+  --sidebar-border: rgb(var(--gray-200));
+  --sidebar-ring: rgb(var(--gray-900));
 }
 
 @layer base {
@@ -106,12 +114,12 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: WorldProMVP, "Noto Sans JP", Helvetica, sans-serif;
-    font-size: 13px;
+    font-family: var(--font-world);
+    font-size: 12px;
     -webkit-font-smoothing: antialiased;
   }
   h1, h2, h3, h4, h5, h6 {
-    font-family: WorldProMVP, "Noto Sans JP", Helvetica, sans-serif;
+    font-family: var(--font-world);
     font-weight: 600;
   }
 }

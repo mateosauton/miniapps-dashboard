@@ -6,6 +6,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { AppSidebar } from '@/components/layout/AppSidebar'
 import { CommandPalette } from '@/components/layout/CommandPalette'
 import { TopBar } from '@/components/layout/TopBar'
+import '@worldcoin/mini-apps-ui-kit-react/styles.css'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <body>
-        <div className="flex min-h-screen bg-[#f9f9f8]">
+        <div className="flex min-h-screen bg-background">
           <AppSidebar />
           <div className="flex flex-1 flex-col overflow-hidden">
             <TopBar
@@ -27,7 +28,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <CommandPalette apps={appsResult.apps} commands={COMMANDS} sections={GUIDE_SECTIONS} />
               }
             />
-            <main className="flex-1 overflow-y-auto p-4 lg:p-6">{children}</main>
+            <main className="flex-1 overflow-y-auto p-3 lg:p-4">{children}</main>
           </div>
         </div>
         <Toaster />

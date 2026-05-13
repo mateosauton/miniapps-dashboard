@@ -1,6 +1,7 @@
 'use client'
 
 import { useMemo, useState } from 'react'
+import { Download, Search } from '@worldcoin/mini-apps-ui-kit-react/icons'
 import { AppCard } from './AppCard'
 import { AppDetailDrawer } from './AppDetailDrawer'
 import { APP_CATEGORIES } from '@/lib/config'
@@ -92,48 +93,47 @@ export function AppsGrid({ apps, metricsByAppId, initialSearch = '' }: Props) {
   return (
     <div>
       {/* Controls */}
-      <div className="flex flex-wrap items-center gap-3 mb-4">
+      <div className="flex flex-wrap items-center gap-2 mb-3">
         {/* Search */}
-        <div className="relative flex-1 min-w-[200px] max-w-xs">
-          <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-[#9D9B96] text-xs">⌕</span>
+        <div className="relative flex-1 min-w-[180px] max-w-[280px]">
+          <Search className="absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-gray-400" />
           <input
             type="text"
             placeholder="Search apps or teams..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-7 pr-3 py-1.5 text-[13px] border border-[#CECDCA] rounded-md bg-white focus:outline-none focus:border-[#121212] focus:ring-1 focus:ring-[#121212]/10"
+            className="h-8 w-full rounded-md border border-gray-200 bg-gray-0 pl-8 pr-2.5 text-[12.5px] text-gray-900 placeholder:text-gray-400 focus:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900/10"
           />
         </div>
 
         {/* Humans only toggle */}
-        <label className="flex items-center gap-2 cursor-pointer text-[13px] font-medium text-[#373635]">
+        <div className="flex items-center gap-1.5 text-[12px] font-medium text-gray-700">
           <button
             type="button"
             onClick={() => setHumansOnly(!humansOnly)}
-            aria-label="Humans only"
-            className="relative w-9 h-5 rounded-full transition-colors shrink-0"
-            style={{ background: humansOnly ? '#121212' : '#CECDCA' }}
+            className="relative w-8 h-4 rounded-full transition-colors shrink-0"
+            style={{ background: humansOnly ? 'rgb(var(--gray-900))' : 'rgb(var(--gray-200))' }}
           >
             <span
-              className="absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform"
-              style={{ left: humansOnly ? '17px' : '2px', background: '#ffffff' }}
+              className="absolute top-0.5 w-3 h-3 bg-gray-0 rounded-full shadow transition-transform"
+              style={{ left: humansOnly ? '17px' : '2px', background: 'rgb(var(--gray-0))' }}
             />
           </button>
-          Humans only
-        </label>
+          <span>Humans only</span>
+        </div>
 
         {/* Sort */}
-        <div className="flex items-center gap-1.5 text-[12px]">
-          <span className="text-[#9D9B96]">Sort:</span>
+        <div className="flex items-center gap-1 text-[12px]">
+          <span className="text-gray-500">Sort:</span>
           {SORTS.map((s) => (
             <button
               key={s.key}
               onClick={() => setSort(s.key)}
               aria-label={s.label}
-              className={`px-2.5 py-1 rounded text-[12px] font-medium transition-colors ${
+              className={`h-7 rounded-md px-2 text-[11.5px] font-medium transition-colors ${
                 sort === s.key
-                  ? 'bg-[#121212] text-white'
-                  : 'bg-[#e1dfda] text-[#373635] hover:bg-[#CECDCA]'
+                  ? 'bg-gray-900 text-gray-0'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               {s.label}
@@ -145,43 +145,44 @@ export function AppsGrid({ apps, metricsByAppId, initialSearch = '' }: Props) {
           type="button"
           onClick={downloadCsv}
           disabled={filtered.length === 0}
-          className="ml-auto px-3 py-1.5 rounded-md text-[12px] font-semibold bg-[#EBF5FF] text-[#005BC4] border border-[#9DD4FD] hover:bg-[#D6EAFF] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="ml-auto inline-flex h-7 items-center gap-1 rounded-md bg-gray-100 px-2.5 text-[11.5px] font-semibold text-gray-900 transition-colors hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          Download CSV
+          <Download className="size-3" />
+          CSV
         </button>
       </div>
 
       {/* Category tabs */}
-      <div className="flex gap-1 flex-wrap mb-4">
+      <div className="flex gap-1 flex-wrap mb-3">
         {APP_CATEGORIES.map((c) => {
           const count = c === 'All' ? apps.length : apps.filter((a) => a.category?.name === c).length
           return (
             <button
               key={c}
               onClick={() => setCat(c)}
-              className={`px-3 py-1 rounded text-[12.5px] font-medium transition-colors whitespace-nowrap ${
+              className={`h-7 rounded-md px-2 text-[11.5px] font-medium transition-colors ${
                 cat === c
-                  ? 'bg-[#121212] text-white'
-                  : 'bg-[#e1dfda] text-[#373635] hover:bg-[#CECDCA]'
+                  ? 'bg-gray-900 text-gray-0'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               {c}
-              <span className="ml-1 opacity-60 text-[11px]">{count}</span>
+              <span className="ml-1 opacity-60 text-[10.5px]">{count}</span>
             </button>
           )
         })}
       </div>
 
       {/* Results count */}
-      <div className="text-[11.5px] text-[#9D9B96] mb-3">
+      <div className="text-[11px] text-gray-500 mb-2.5">
         {filtered.length} app{filtered.length !== 1 ? 's' : ''}
       </div>
 
       {/* Grid */}
       {filtered.length === 0 ? (
-        <div className="text-center py-16 text-[#9D9B96]">No apps match your filters.</div>
+        <div className="text-center py-12 text-gray-500">No apps match your filters.</div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-2.5">
           {filtered.map((app) => (
             <AppCard key={app.app_id} app={app} metrics={metricsByAppId?.[app.app_id]} onClick={() => setSelectedApp(app)} />
           ))}
