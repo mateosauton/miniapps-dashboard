@@ -83,10 +83,9 @@ export function CommandGrid({ commands }: Props) {
           return (
             <div
               key={cmd.slug}
-              className={cn(
-                'bg-gray-0 border rounded-lg overflow-hidden transition-colors',
+              className={`bg-white border rounded-lg bg-gray-0 overflow-hidden transition-colors ${
                 isOpen ? 'border-gray-900 xl:col-span-2' : 'border-gray-200'
-              )}
+              }`}
             >
               {/* Header */}
               <button

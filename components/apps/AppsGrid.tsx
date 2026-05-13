@@ -107,7 +107,6 @@ export function AppsGrid({ apps, metricsByAppId }: Props) {
           <button
             type="button"
             onClick={() => setHumansOnly(!humansOnly)}
-            aria-label="Humans only"
             className="relative w-8 h-4 rounded-full transition-colors shrink-0"
             style={{ background: humansOnly ? 'rgb(var(--gray-900))' : 'rgb(var(--gray-200))' }}
           >
