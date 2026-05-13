@@ -107,7 +107,7 @@ export function AppsGrid({ apps, metricsByAppId, initialSearch = '' }: Props) {
         </div>
 
         {/* Humans only toggle */}
-        <label className="flex items-center gap-1.5 cursor-pointer text-[12px] font-medium text-gray-700">
+        <div className="flex items-center gap-1.5 text-[12px] font-medium text-gray-700">
           <button
             type="button"
             onClick={() => setHumansOnly(!humansOnly)}
@@ -116,11 +116,11 @@ export function AppsGrid({ apps, metricsByAppId, initialSearch = '' }: Props) {
           >
             <span
               className="absolute top-0.5 w-3 h-3 bg-gray-0 rounded-full shadow transition-transform"
-              style={{ left: humansOnly ? '17px' : '2px' }}
+              style={{ left: humansOnly ? '17px' : '2px', background: 'rgb(var(--gray-0))' }}
             />
           </button>
-          Humans only
-        </label>
+          <span>Humans only</span>
+        </div>
 
         {/* Sort */}
         <div className="flex items-center gap-1 text-[12px]">
