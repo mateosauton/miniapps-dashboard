@@ -22,14 +22,15 @@ export default async function OverviewPage() {
   const metricsMap = metricsResult.map
 
   // Persist snapshot for new-app detection (runs server-side)
-  const newApps = getNewApps(apps)
+  const [newApps, oldestApps] = await Promise.all([
+    getNewApps(apps),
+    getOldestApps(apps, 20),
+  ])
   void saveSnapshot(apps)
 
   const stats = computeStats(apps)
   const newUsers7d = sumNewUsers7d(metricsMap)
   const totalOpens = sumTotalOpens(metricsMap)
-  const oldestApps = getOldestApps(apps, 20)
-
   return (
     <div className="space-y-4 max-w-[1400px]">
       {!appsResult.ok && (
