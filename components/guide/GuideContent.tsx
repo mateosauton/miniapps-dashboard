@@ -4,7 +4,10 @@ import { useState } from 'react'
 import { CodeBlock } from '@/components/commands/CodeBlock'
 import type { GuideSection } from '@/types'
 
-interface Props { sections: GuideSection[] }
+interface Props {
+  sections: GuideSection[]
+  initialSectionId?: string
+}
 
 const SEV_STYLES: Record<string, string> = {
   critical:    'bg-[#121212] border-[#2D2C2C]',
@@ -80,8 +83,11 @@ function SectionBody({ section }: { section: GuideSection }) {
   return null
 }
 
-export function GuideContent({ sections }: Props) {
-  const [open, setOpen] = useState<string | null>(sections[0]?.id ?? null)
+export function GuideContent({ sections, initialSectionId }: Props) {
+  const defaultOpen = sections.some((section) => section.id === initialSectionId)
+    ? initialSectionId ?? null
+    : sections[0]?.id ?? null
+  const [open, setOpen] = useState<string | null>(defaultOpen)
 
   return (
     <div className="space-y-5">
