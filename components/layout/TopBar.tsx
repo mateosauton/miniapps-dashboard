@@ -23,22 +23,22 @@ export function TopBar() {
   ]
 
   return (
-    <header className="bg-gray-0 border-b border-gray-200 px-4 lg:px-6 py-3 shrink-0">
+    <header className="bg-gray-0 border-b border-gray-200 px-3 lg:px-4 py-2 shrink-0">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <MobileNav />
           <div>
-            <div className="font-semibold text-[15px] text-gray-900">{meta.title}</div>
-            <div className="text-[11.5px] text-gray-500 mt-0.5">{meta.sub}</div>
+            <div className="font-semibold text-[13px] text-gray-900">{meta.title}</div>
+            <div className="text-[10.5px] text-gray-500">{meta.sub}</div>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 text-[11.5px] font-medium text-info-600 bg-info-100 border border-info-600/20 px-2.5 py-1 rounded-full">
+        <div className="flex items-center gap-1.5 text-[10.5px] font-medium text-info-600 bg-info-100 border border-info-600/20 px-2 py-0.5 rounded-md">
           <div className="w-1.5 h-1.5 rounded-full bg-info-600" />
           Live data
         </div>
       </div>
 
-      <nav className="flex lg:hidden gap-2 mt-3 overflow-x-auto">
+      <nav className="flex lg:hidden gap-1.5 mt-2 overflow-x-auto">
         {mobileLinks.map((link) => {
           const active = pathname === link.href || pathname.startsWith(link.href + '/')
           return (
@@ -47,8 +47,8 @@ export function TopBar() {
               href={link.href}
               className={
                 active
-                  ? 'px-2.5 py-1 rounded-full text-[12px] font-medium bg-gray-900 text-gray-0 whitespace-nowrap'
-                  : 'px-2.5 py-1 rounded-full text-[12px] font-medium bg-gray-50 text-gray-700 whitespace-nowrap'
+                  ? 'px-2 py-1 rounded-md text-[11.5px] font-medium bg-gray-900 text-gray-0 whitespace-nowrap'
+                  : 'px-2 py-1 rounded-md text-[11.5px] font-medium bg-gray-50 text-gray-700 whitespace-nowrap'
               }
             >
               {link.label}
