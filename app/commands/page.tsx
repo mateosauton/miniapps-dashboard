@@ -7,10 +7,16 @@ export const metadata: Metadata = {
   description: 'Full reference for MiniKit, IDKit, and AgentKit commands with params, code examples, and LLM prompts.',
 }
 
-export default function CommandsPage() {
+export default async function CommandsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ command?: string | string[] }>
+}) {
+  const params = await searchParams
+  const initialCommandSlug = Array.isArray(params?.command) ? params?.command[0] : params?.command
   return (
     <div className="max-w-[1400px]">
-      <CommandGrid commands={COMMANDS} />
+      <CommandGrid commands={COMMANDS} initialCommandSlug={initialCommandSlug} />
     </div>
   )
 }

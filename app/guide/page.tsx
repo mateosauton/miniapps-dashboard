@@ -7,10 +7,16 @@ export const metadata: Metadata = {
   description: 'Step-by-step guide to implementing MiniKit, payments, authentication, and notifications.',
 }
 
-export default function GuidePage() {
+export default async function GuidePage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ section?: string | string[] }>
+}) {
+  const params = await searchParams
+  const initialSectionId = Array.isArray(params?.section) ? params?.section[0] : params?.section
   return (
     <div className="max-w-[1200px]">
-      <GuideContent sections={GUIDE_SECTIONS} />
+      <GuideContent sections={GUIDE_SECTIONS} initialSectionId={initialSectionId} />
     </div>
   )
 }
