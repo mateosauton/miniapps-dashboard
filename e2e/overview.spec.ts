@@ -29,21 +29,26 @@ test.describe('Overview page', () => {
     await expect(page.getByTestId('stats-grid').getByText('5').first()).toBeVisible()
   })
 
-  test('spotlight row renders 3 sections', async ({ page }) => {
-    // NewAppsBox + 2× AppSpotlight
-    const spotlightRow = page.locator('.grid.grid-cols-1').nth(0)
-    await expect(spotlightRow.locator('> *')).toHaveCount(3)
+  test('ecosystem pulse renders aggregate panels', async ({ page }) => {
+    const pulse = page.getByTestId('ecosystem-pulse')
+    await expect(pulse).toBeVisible()
+    await expect(page.getByTestId('ecosystem-pulse-panel')).toHaveCount(4)
+
+    for (const heading of ['Store Health', 'Growth Activity', 'Distribution', 'Integration Surface']) {
+      await expect(pulse.getByText(heading)).toBeVisible()
+    }
   })
 
-  test('Top Apps table renders with correct header', async ({ page }) => {
-    await expect(page.getByText('Top Apps by Users')).toBeVisible()
-    await expect(page.locator('table')).toBeVisible()
+  test('ecosystem pulse shows store health summary', async ({ page }) => {
+    const pulse = page.getByTestId('ecosystem-pulse')
+    await expect(pulse.getByText('Verified apps')).toBeVisible()
+    await expect(pulse.getByText('4 / 4').first()).toBeVisible()
+    await expect(pulse.getByText('Visible in store')).toBeVisible()
   })
 
-  test('Top Apps table shows mock apps in user-count order', async ({ page }) => {
-    const rows = page.locator('table tbody tr')
-    // Sorted by unique_users: Alpha (10k) > Gamma (8k) > Beta (5k) > Delta (3k)
-    await expect(rows.first().getByText('Alpha Finance')).toBeVisible()
+  test('overview avoids app-list presentation', async ({ page }) => {
+    await expect(page.getByText('Top Apps by Users')).not.toBeVisible()
+    await expect(page.locator('table')).not.toBeVisible()
   })
 
   test('no error banner on successful API response', async ({ page }) => {

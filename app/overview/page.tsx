@@ -1,14 +1,11 @@
 import type { Metadata } from 'next'
 import { fetchAppsSafe, computeStats } from '@/lib/api'
 import { fetchMetricsSafe, sumNewUsers7d, sumTotalOpens } from '@/lib/metrics-api'
-import { saveSnapshot, getNewApps, getOldestApps } from '@/lib/snapshot'
+import { saveSnapshot, getNewApps } from '@/lib/snapshot'
 import { StatsGrid } from '@/components/overview/StatsGrid'
 import { CategoryBreakdown } from '@/components/overview/CategoryBreakdown'
-import { TopAppsTable } from '@/components/overview/TopAppsTable'
 import { EcosystemHighlights } from '@/components/overview/EcosystemHighlights'
-import { NewAppsBox } from '@/components/overview/NewAppsBox'
-import { AppSpotlight } from '@/components/overview/AppSpotlight'
-import { FastestGrowing } from '@/components/overview/FastestGrowing'
+import { EcosystemPulse } from '@/components/overview/EcosystemPulse'
 import { ErrorBanner } from '@/components/ui/ErrorBanner'
 
 export const metadata: Metadata = {
@@ -22,10 +19,7 @@ export default async function OverviewPage() {
   const metricsMap = metricsResult.map
 
   // Persist snapshot for new-app detection (runs server-side)
-  const [newApps, oldestApps] = await Promise.all([
-    getNewApps(apps),
-    getOldestApps(apps, 20),
-  ])
+  const newApps = await getNewApps(apps)
   void saveSnapshot(apps)
 
   const stats = computeStats(apps)
@@ -40,22 +34,13 @@ export default async function OverviewPage() {
         <ErrorBanner message="Growth and usage metrics are temporarily unavailable." />
       )}
       <StatsGrid stats={stats} newUsers7d={newUsers7d} totalOpens={totalOpens} />
-
-      {/* Spotlight row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <NewAppsBox apps={newApps} />
-        <AppSpotlight apps={apps.slice(0, 100)} type="daily" />
-        <AppSpotlight apps={oldestApps} type="gold" />
-      </div>
+      <EcosystemPulse apps={apps} metrics={metricsMap} newAppsCount={newApps.length} />
 
       {/* Category + conversion + growth */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <CategoryBreakdown categories={stats.categoryBreakdown} />
         <EcosystemHighlights categories={stats.categoryBreakdown} />
-        <FastestGrowing apps={apps} metrics={metricsMap} />
       </div>
-
-      <TopAppsTable apps={stats.topApps} />
     </div>
   )
 }
