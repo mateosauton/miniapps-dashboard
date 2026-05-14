@@ -71,9 +71,13 @@ export function EcosystemPulse({ apps, metrics, newAppsCount }: Props) {
   ]
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2.5">
+    <div data-testid="ecosystem-pulse" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2.5">
       {panels.map((panel) => (
-        <section key={panel.title} className="bg-gray-0 border border-gray-200 rounded-lg p-3">
+        <section
+          key={panel.title}
+          data-testid="ecosystem-pulse-panel"
+          className="bg-gray-0 border border-gray-200 rounded-lg p-3"
+        >
           <div className="text-[9.5px] font-semibold text-gray-500 uppercase tracking-wider mb-2">
             {panel.title}
           </div>
